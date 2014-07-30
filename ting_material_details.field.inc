@@ -415,11 +415,17 @@ function ting_material_details_field_formatter_view($entity_type, $entity, $fiel
           $details = '';
           if (is_array($val)) {
             foreach ($val as $detail) {
-              $details .= '<span class="ting-material-detail">' . $detail . '</span>';
+              if ($field['field_name'] == 'ting_details_contributor') {
+                $detail = l($detail, 'search/ting/term.creator="' . $detail . '"');
+              }
+              $details[] = '<span class="ting-material-detail">' . $detail . '</span>';
             }
           }
           else {
-            if ($field['field_name'] == 'ting_details_classification') {
+            if ($field['field_name'] == 'ting_details_contributor') {
+              $val = l($val, 'search/ting/term.creator="' . $val . '"');
+            }
+            elseif ($field['field_name'] == 'ting_details_classification') {
               $dk5_text = $entity->getClassificationText();
               $val = l($val, 'search/ting/facet.dk5="' . $val . '"') . ' (' . $dk5_text . ')';
             }
